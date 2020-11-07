@@ -1,0 +1,11 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'gcr.io/alpine-comfort-268715/quarkus-swagger:$BRANCH_NAME-$COMMIT_SHA', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/alpine-comfort-268715/quarkus-swagger"]
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['beta', 'run', 'deploy', 'quarkus-swagger','--platform','managed','--allow-unauthenticated', '--image', 'gcr.io/alpine-comfort-268715/quarkus-swagger:$BRANCH_NAME-$COMMIT_SHA', '--region', 'us-central1','--set-env-vars','DISABLE_SIGNAL_HANDLERS=foobar']
+options:
+ machineType: 'N1_HIGHCPU_8'
