@@ -10,6 +10,6 @@ RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
 FROM openjdk:8
 EXPOSE 8080
 RUN mkdir /app
-COPY target/lib/* /app/lib/
+COPY --from=build /usr/src/app/target/lib/* /app/lib/
 COPY --from=build /usr/src/app/target/*-runner.jar /app/app.jar
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
